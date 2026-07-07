@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #2e2e2e;
+    color: white;
+    padding: 20px;
+}
+
+.card {
+    width: 150px;
+    height: 220px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: absolute; /* Allows manual positioning */
+    top: 150px;
+    left: 100px;
+}
+
+.card1 {
+    width: 150px;
+    height: 220px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: absolute; /* Allows manual positioning */
+    top: 150px;
+    left: 150px;
+}
+
+.card2 {
+    width: 150px;
+    height: 220px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: absolute; /* Allows manual positioning */
+    top: 150px;
+    left: 125px;
+}
+
+.card3 {
+    width: 150px;
+    height: 220px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: absolute; /* Allows manual positioning */
+    top: 150px;
+    left: 100px;
+}
+
+.corner {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.corner.bottom {
+    transform: rotate(180deg);
+}
+
+.suit {
+    font-size: 60px;
+    text-align: center;
+}
+
+.red {
+    color: red;
+}
+
+select, button, input {
+    padding: 5px;
+    margin: 5px;
+    font-size: 16px;
+}
