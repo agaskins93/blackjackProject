@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Move Playing Card</title>
-<link rel="stylesheet" href="/css/style.css">
+<link id ="myCss" type="text/css" rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -40,8 +40,11 @@
 <button onclick="updateCard()">Generate Card</button>
 <br>
 
-<button onclick="createCardhtml()">sample</button>
+<button onclick="createCardhtml()">create</button>
 <br>
+
+<button onclick="hit()">hit</button>
+
 <!-- Position Controls -->
 <label>X Position (px): <input type="number" id="posX" value="150"></label>
 <label>Y Position (px): <input type="number" id="posY" value="150"></label>
@@ -49,10 +52,6 @@
 
 <!-- Card Display -->
  <div id = container>
-<div id="card" class="card">
-    <div id="top" class="corner">A<br>♠</div>
-    <div id="middle" class="suit">♠</div>
-    <div id="bottom" class="corner bottom">A<br>♠</div>
     <div id="card" class="card">
     <div id="top" class="corner">A<br>♠</div>
     <div id="middle" class="suit">♠</div>

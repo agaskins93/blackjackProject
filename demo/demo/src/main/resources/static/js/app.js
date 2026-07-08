@@ -1,3 +1,6 @@
+let finalcount = 0;
+let starterLeft = 1050;
+let newLeft = 0;
 function updateCard() {
     const rank = document.getElementById('rank').value;
     const suit = document.getElementById('suit').value;
@@ -89,8 +92,12 @@ async function suitConverter(apiSuit) {
                 return null;
 }
 }
-        count = 0;
+        let count = 0;
 
+function storeLatestCount(){
+return count;
+}
+       
 function createCardhtml() {
 
     count++;
@@ -100,15 +107,17 @@ function createCardhtml() {
             const outterbox = document.createElement("div");
             outterbox.id = "card"+count;
              outterbox.className = "card"+count;
-            console.log("card"+count)
-        // Create 4 different divs per group
-
+            console.log("card"+count);
+            finalcount = count;
+            
+            
+              
+            
 
         for (let i = 1; i <= 3; i++) {
             var idtag = count +1
             const box = document.createElement("div");
             
-            // Assign unique ID using timestamp + index (prevents duplicates)
              if (i == 1) {
             box.id = "top";
             box.className = "corner" ;
@@ -135,4 +144,74 @@ function createCardhtml() {
         console.error("Error creating group:", err);
     }
     
+}
+var hitcount = count + 1;
+function hit() {
+    console.log("finalcount" + finalcount)
+
+const mySheet = Array.from(document.styleSheets).find(sheet => {
+    return sheet.href && sheet.href.includes('/css/style.css');
+  });
+  
+  // 2. If found, inject your new CSS rule at the very end
+  if (mySheet) {
+
+    try {
+        newLeft = starterLeft + 50;
+         starterLeft = newLeft ;
+        console.log("hit" + starterLeft);
+     const newRule = `.card${finalcount + 1} { 
+  width: 150px !important; 
+  height: 220px !important; 
+  border: 2px solid #000; 
+  border-radius: 10px; 
+  background: white; 
+  color: black; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  padding: 10px; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+  position: absolute !important; 
+  top: 150px !important; 
+  left: ${newLeft}px !important; 
+}`;
+
+      // Inserting at mySheet.cssRules.length ensures it has the highest priority
+      mySheet.insertRule(newRule, mySheet.cssRules.length);
+       const styleTag = document.createElement('style');
+  
+  // 2. Build the exact text, fixing the !important placement
+  styleTag.textContent = `
+    .card${finalcount + 1} { 
+      width: 150px !important; 
+      height: 220px !important; 
+      border: 2px solid #000; 
+      border-radius: 10px; 
+      background: white; 
+      color: black; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      padding: 10px; 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+      position: absolute !important; 
+      top: 150px !important; 
+      left: ${newLeft}px !important; 
+    }
+  `;
+  
+  // 3. Append it to the head so it is visible in the HTML elements tree
+  document.head.appendChild(styleTag);
+      console.log("Successfully injected the new CSS rule!");
+    } catch (error) {
+      console.error("Failed to insert rule:", error);
+    }
+  } else {
+    console.error("Could not find /css/style.css in document.styleSheets");
+  }
+  
+createCardhtml();
+
+
 }
