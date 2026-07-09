@@ -2,62 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Move Playing Card</title>
+<title class="center">BlackJack</title>
 <link id ="myCss" type="text/css" rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<h1>Move Playing Card</h1>
+<h1>Black Jack</h1>
 
-<!-- Controls -->
-<label>Rank:
-    <select id="rank">
-        <option>A</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-        <option>J</option>
-        <option>Q</option>
-        <option>K</option>
-    </select>
-</label>
 
-<label>Suit:
-    <select id="suit">
-        <option value="♠">Spades (♠)</option>
-        <option value="♥">Hearts (♥)</option>
-        <option value="♦">Diamonds (♦)</option>
-        <option value="♣">Clubs (♣)</option>
-    </select>
-</label>
-
-<button onclick="updateCard()">Generate Card</button>
+<div id="buttonContainer" class="center">
+<button onclick="stay('P')">stay</button>
 <br>
 
-<button onclick="createCardhtml()">create</button>
+<button onclick="hit('P')">hit</button>
 <br>
 
-<button onclick="hit()">hit</button>
+<button onclick="start()">Start Game</button>
+</div>
 
-<!-- Position Controls -->
-<label>X Position (px): <input type="number" id="posX" value="150"></label>
-<label>Y Position (px): <input type="number" id="posY" value="150"></label>
-<button onclick="moveCard()">Move Card</button>
+<button onclick="reset()">reset</button>
+</div>
+
+<button onclick="handValue('P')"> player value</button>
+</div>
+
+<button onclick="handValue('D')"> dealer value</button>
+</div>
 
 <!-- Card Display -->
  <div id = container>
-    <div id="card" class="card">
-    <div id="top" class="corner">A<br>♠</div>
-    <div id="middle" class="suit">♠</div>
-    <div id="bottom" class="corner bottom">A<br>♠</div>
+   
 </div>
+<div style="width: 100%; overflow: hidden; position: relative;  top: 250px;">
+<div style="width: 50%; float: left;  color:white;">Player Score:</div>
+<div style="width: 50%; float: left; color:white;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dealer Score:</div>
 </div>
+
 
 <script src="/js/app.js"></script>
 

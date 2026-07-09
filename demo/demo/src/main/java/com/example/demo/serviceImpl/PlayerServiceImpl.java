@@ -34,7 +34,6 @@ public class PlayerServiceImpl implements PlayerService {
             playerHand.add(deck.drawCard());
             playerHand.add(deck.drawCard());
             playerMaintainedHand.addAll(playerHand);
-            logger.info("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOG2" + playerMaintainedHand.toString());
 
             return playerHand;
     } else {
@@ -48,15 +47,15 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override 
-    public List<Card> hit(char mode) {
+    public Card hit(char mode) {
         if (mode ==  'P') {
             Deck deck = new Deck(); 
             playerMaintainedHand.add(deck.drawCard());
-            return playerMaintainedHand;
+            return deck.drawCard();
         } else {
             Deck deck = new Deck(); 
             dealerMaintainedHand.add(deck.drawCard());
-            return dealerMaintainedHand;
+            return deck.drawCard();
         }
     }
 
@@ -86,16 +85,16 @@ public class PlayerServiceImpl implements PlayerService {
 
     }
     @Override
-    public void clearHandVal(char mode) {
+    public void clearHandVal() {
 
-         if (mode ==  'P') {     
+            
                 playerMaintainedHand.clear();
-
-            } else{
+                overallPlayerPoints = 0;
                 dealerMaintainedHand.clear();
+                overallDealerPoints = 0;
 
             }
-    }
+    
 
     @Override
     public String checkScore(char mode) {

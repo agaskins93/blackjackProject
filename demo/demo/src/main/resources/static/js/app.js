@@ -30,9 +30,15 @@ function moveCard() {
 }
 
 
-const BASE_URL = 'http://localhost:8080/api/game/draw?mode=D';
+let BASE_URL = "";
+async function starterDeck(mode) {
+  if(mode == 'P') {
+        BASE_URL = 'http://localhost:8080/api/game/draw?mode=P';
 
-async function getAllItems() {
+  } else {
+         BASE_URL = 'http://localhost:8080/api/game/draw?mode=D';
+  }
+
   try {
     const response = await fetch(BASE_URL);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -46,7 +52,7 @@ async function getAllItems() {
             console.log("ID:", item.suit, "Name:", item.rank);
             console.log(rankConverter(item.rank));
              console.log(suitConverter(item.suit));
-
+            createCardhtml(abbrvConverter(item.rank),suitConverter(item.suit));
         }
     } else {
         console.error("Parsed value is not an array.");
@@ -57,7 +63,7 @@ async function getAllItems() {
 }
 
 
-async function rankConverter(apiRank) {
+function rankConverter(apiRank) {
  switch (apiRank) {
             case "ONE": return 1;
             case "TWO": return 2;
@@ -72,15 +78,36 @@ async function rankConverter(apiRank) {
             case "JACK": return 10;
             case "QUEEN": return 10;
             case "KING": return 10;
-            case "ACE": return 10;
+            case "ACE": return 11;
+            default:
+                return null;
+}
+
+}
+
+function abbrvConverter(apiRankcode) {
+ switch (apiRankcode) {
+            case "ONE": return "1";
+            case "TWO": return "2";
+            case "THREE": return "3";
+            case "FOUR": return "4";
+            case "FIVE": return "5";
+            case "SIX": return "6";
+            case "SEVEN": return "7";
+            case "EIGHT": return "8";
+            case "NINE": return "9";
+            case "TEN": return "10";
+            case "JACK": return "J";
+            case "QUEEN": return "Q";
+            case "KING": return "K";
+            case "ACE": return "A";
             default:
                 return null;
 }
 
 }
    
-
-async function suitConverter(apiSuit) {
+function suitConverter(apiSuit) {
     
  switch (apiSuit) {
             case "HEARTS": return "♥";
@@ -98,8 +125,8 @@ function storeLatestCount(){
 return count;
 }
        
-function createCardhtml() {
-
+function createCardhtml(abbrvRank, suit) {
+ console.log("Createcard" + abbrvRank, suit );
     count++;
  const parent = document.getElementById("container");
 
@@ -121,19 +148,19 @@ function createCardhtml() {
              if (i == 1) {
             box.id = "top";
             box.className = "corner" ;
-            box.appendChild(document.createTextNode("A"));
+            box.appendChild(document.createTextNode(abbrvRank));
             box.appendChild(document.createElement("br"));
-            box.appendChild(document.createTextNode("♠"));
+            box.appendChild(document.createTextNode(suit));
             } else if (i == 2) {
             box.id = "middle";
             box.className = "suit" ; 
-            box.appendChild(document.createTextNode("♠")); 
+            box.appendChild(document.createTextNode(suit)); 
             } else if (i == 3) {
             box.id = "bottom";
             box.className = "corner bottom";
-            box.appendChild(document.createTextNode("A"));
+            box.appendChild(document.createTextNode(abbrvRank));
             box.appendChild(document.createElement("br"));
-            box.appendChild(document.createTextNode("♠"));   
+            box.appendChild(document.createTextNode(suit));   
             }
                         outterbox.appendChild(box);
                         
@@ -146,7 +173,32 @@ function createCardhtml() {
     
 }
 var hitcount = count + 1;
-function hit() {
+let hitrank = "";
+let hitsuit = "";
+BASE_URL2 = "";
+async function hit(mode) {
+
+    if(mode == 'P') {
+        BASE_URL2 = 'http://localhost:8080/api/game/hit?mode=P';
+
+  } else {
+         BASE_URL2 = 'http://localhost:8080/api/game/hit?mode=D';
+  }
+
+  try {
+    const response = await fetch(BASE_URL2);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+    const items = await response.json();
+    const data = JSON.parse(JSON.stringify(items));
+    hitrank =  data.rank;
+    hitsuit =  data.suit;
+
+        
+    
+} catch (err) {
+    console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
+}
     console.log("finalcount" + finalcount)
 
 const mySheet = Array.from(document.styleSheets).find(sheet => {
@@ -211,7 +263,82 @@ const mySheet = Array.from(document.styleSheets).find(sheet => {
     console.error("Could not find /css/style.css in document.styleSheets");
   }
   
-createCardhtml();
-
+            createCardhtml(abbrvConverter(hitrank),suitConverter(hitsuit));
 
 }
+function start(){
+    starterDeck('D');
+    starterDeck('P');
+}
+let BASE_URL3 = ""
+async function stay(mode){
+      if(mode == 'P') {
+        BASE_URL3 = 'http://localhost:8080/api/game/stay?mode=P';
+
+  } else {
+         BASE_URL3 = 'http://localhost:8080/api/game/stay?mode=D';
+  }
+
+  try {
+    const response = await fetch(BASE_URL3);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+    const items = await response.json();
+    const data = JSON.parse(JSON.stringify(items));
+    console.log("Data:" + data)
+
+        
+    
+} catch (err) {
+    console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
+}
+}
+let BASE_URL4 = ""
+async function reset () { 
+ BASE_URL4  = 'http://localhost:8080/api/game/reset';
+
+ try {
+    const response = await fetch(BASE_URL4);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+console.log("clear: " + response);
+const cards = document.getElementById('container');
+while (cards.firstChild) {
+  cards.removeChild(cards.firstChild);
+  count = 0;
+  finalcount = 0;
+}
+
+        
+    
+} catch (err) {
+    console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
+}
+}
+
+
+let BASE_URL5 = ""
+async function handValue (mode) { 
+  if(mode == 'P') {
+        BASE_URL5 = 'http://localhost:8080/api/game/value?mode=P';
+
+  } else {
+         BASE_URL5 = 'http://localhost:8080/api/game/value?mode=D';
+  }   
+let handval =0;
+ try {
+    const response = await fetch(BASE_URL5);
+    const data = await response.json();
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+console.log("value of hand " + JSON.stringify(data));
+ handval = JSON.stringify(response)
+
+        
+    
+} catch (err) {
+    console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
+}
+ return handval;
+}
+

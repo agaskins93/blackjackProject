@@ -30,9 +30,9 @@ public class GameController {
     }
 
       @GetMapping("/hit")
-    public List<Card> hit(char mode) {
+    public Card hit(char mode) {
         // Fetch current game state/deck from your service layer
-         List<Card> playerHand= playerService.hit(mode);
+         Card playerHand= playerService.hit(mode);
         return playerHand;
 
     }
@@ -59,6 +59,16 @@ public class GameController {
         }
 
         return message;
+
+    }
+
+     @GetMapping("/reset")
+    public void reset() {      
+        
+        playerService.clearHandVal();
+        
+
+      
 
     }
 
