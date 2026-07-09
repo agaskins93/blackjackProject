@@ -172,11 +172,57 @@ function createCardhtml(abbrvRank, suit) {
     }
     
 }
+
+function createCardhtmlforDealer(abbrvRank, suit) {
+ console.log("CreatecardNOW" + abbrvRank, suit );
+ const parent = document.getElementById("container");
+
+       try {
+            const outterbox = document.createElement("div");
+            outterbox.id = "dealerExtraCard";
+             outterbox.className = "dealerExtraCard";
+            
+            
+              
+            
+
+        for (let i = 1; i <= 3; i++) {
+            const box = document.createElement("div");
+            
+             if (i == 1) {
+            box.id = "top";
+            box.className = "corner" ;
+            box.appendChild(document.createTextNode(abbrvRank));
+            box.appendChild(document.createElement("br"));
+            box.appendChild(document.createTextNode(suit));
+            } else if (i == 2) {
+            box.id = "middle";
+            box.className = "suit" ; 
+            box.appendChild(document.createTextNode(suit)); 
+            } else if (i == 3) {
+            box.id = "bottom";
+            box.className = "corner bottom";
+            box.appendChild(document.createTextNode(abbrvRank));
+            box.appendChild(document.createElement("br"));
+            box.appendChild(document.createTextNode(suit));   
+            }
+                        outterbox.appendChild(box);
+                        
+          }
+        parent.appendChild(outterbox);
+        // Append full group to container
+    } catch (err) {
+        console.error("Error creating group:", err);
+    }
+    
+    
+}
 var hitcount = count + 1;
 let hitrank = "";
 let hitsuit = "";
 BASE_URL2 = "";
 async function hit(mode) {
+    console.log("IN HIT");
 
     if(mode == 'P') {
         BASE_URL2 = 'http://localhost:8080/api/game/hit?mode=P';
@@ -255,6 +301,17 @@ const mySheet = Array.from(document.styleSheets).find(sheet => {
   
   // 3. Append it to the head so it is visible in the HTML elements tree
   document.head.appendChild(styleTag);
+
+  
+   if (mode == 'D'){
+                console.log("made it");
+             createCardhtmlforDealer(abbrvConverter(hitrank),suitConverter(hitsuit));
+
+            } else {
+                createCardhtml(abbrvConverter(hitrank),suitConverter(hitsuit));
+            }
+
+  
       console.log("Successfully injected the new CSS rule!");
     } catch (error) {
       console.error("Failed to insert rule:", error);
@@ -262,37 +319,19 @@ const mySheet = Array.from(document.styleSheets).find(sheet => {
   } else {
     console.error("Could not find /css/style.css in document.styleSheets");
   }
-  
-            createCardhtml(abbrvConverter(hitrank),suitConverter(hitsuit));
-
 }
-function start(){
+            
+
+function sleep(ms) {
+return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function start(){
     starterDeck('D');
+    await sleep(3000);
     starterDeck('P');
 }
-let BASE_URL3 = ""
-async function stay(mode){
-      if(mode == 'P') {
-        BASE_URL3 = 'http://localhost:8080/api/game/stay?mode=P';
 
-  } else {
-         BASE_URL3 = 'http://localhost:8080/api/game/stay?mode=D';
-  }
-
-  try {
-    const response = await fetch(BASE_URL3);
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    
-    const items = await response.json();
-    const data = JSON.parse(JSON.stringify(items));
-    console.log("Data:" + data)
-
-        
-    
-} catch (err) {
-    console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
-}
-}
 let BASE_URL4 = ""
 async function reset () { 
  BASE_URL4  = 'http://localhost:8080/api/game/reset';
@@ -316,7 +355,7 @@ while (cards.firstChild) {
 }
 }
 
-
+let extraDealerCardValue = 0;
 let BASE_URL5 = ""
 async function handValue (mode) { 
   if(mode == 'P') {
@@ -325,20 +364,50 @@ async function handValue (mode) {
   } else {
          BASE_URL5 = 'http://localhost:8080/api/game/value?mode=D';
   }   
-let handval =0;
+let handval = 0;
  try {
     const response = await fetch(BASE_URL5);
     const data = await response.json();
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     
 console.log("value of hand " + JSON.stringify(data));
- handval = JSON.stringify(response)
-
+ extraDealerCardValue = JSON.stringify(data);
+ 
+return data;
         
     
 } catch (err) {
     console.error("Invalid JSON:", err); // JSON.parse throws on malformed JSON 
 }
- return handval;
 }
+
+let BASE_URL3 = ""
+console.log("Extra2:" +extraDealerCardValue)
+async function stayNow () {
+    extraDealerCardValue = await handValue('D');
+    let dealerHandVal = extraDealerCardValue;
+    console.log("VAl" + extraDealerCardValue);
+    if (dealerHandVal < 17){
+        hit('D');
+    }
+
+    
+        BASE_URL3 = 'http://localhost:8080/api/game/stay?mode=D';
+
+    
+
+  
+    const response = await fetch(BASE_URL3);
+    const data = await response.text();
+    alert(data);
+
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+        
+    
+
+
+
+
+    }
 

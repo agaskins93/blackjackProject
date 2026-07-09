@@ -50,7 +50,6 @@ public class GameController {
         
         int dealerValue =  playerService.calculateHandVal('D');
         if (dealerValue < 17) {
-             playerService.hit('D');
              playerService.calculateHandVal('D');
              message = playerService.checkScore('D');
         } else{
